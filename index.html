@@ -3,6 +3,260 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PayDay - Count them digits!</title>
+  <title>PayCalc Pro – Ultimate Salary & Tax Calculator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+<body>
+  <div class="container">
+    <header>
+      <h1>PayCalc Pro</h1>
+      <p>The Ultimate Salary & Tax Calculator for All 50 States</p>
+    </header>
+
+    <div class="main-calculator">
+      <h2>Calculate Your Take-Home Pay</h2>
+
+      <div class="toggle-group">
+        <span class="toggle-label">Show After-Tax Values</span>
+        <div class="toggle-switch" id="afterTaxToggle"></div>
+      </div>
+
+      <div class="state-requirement-notice" id="stateRequirementNotice">
+        ⚠️ Please select a state to view after-tax calculations
+      </div>
+
+      <div class="input-grid">
+        <div class="input-group">
+          <label>Hourly Rate</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="number" id="hourlyRate" placeholder="0.00" step="0.01" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Weekly Pay</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="number" id="weeklyPay" placeholder="0.00" step="0.01" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Bi-Weekly Pay</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="number" id="biweeklyPay" placeholder="0.00" step="0.01" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Monthly Pay</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="number" id="monthlyPay" placeholder="0.00" step="0.01" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Annual Salary</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="number" id="annualSalary" placeholder="0.00" step="0.01" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Hours per Week</label>
+          <div class="input-wrapper">
+            <input type="number" id="hoursPerWeek" value="40" min="1" max="168" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label id="stateLabel">
+            State
+            <span class="info-tooltip" data-tooltip="Select your state for accurate tax calculations">?</span>
+          </label>
+          <div class="input-wrapper" id="stateSelectWrapper">
+            <select id="stateSelect">
+              <option value="">Select State</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Filing Status</label>
+          <div class="input-wrapper">
+            <select id="filingStatus">
+              <option value="single">Single</option>
+              <option value="married">Married Filing Jointly</option>
+              <option value="married_separately">Married Filing Separately</option>
+              <option value="head_of_household">Head of Household</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <h3>Your Pay Breakdown</h3>
+
+        <div class="currency-selector">
+          <label for="currencySelect">Display in:</label>
+          <select id="currencySelect">
+            <option value="USD" selected>USD</option>
+            <option value="INR">INR</option>
+            <option value="CNY">CNY</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-label">Hourly</div>
+            <div class="result-value primary" id="resultHourly">$0.00</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Weekly</div>
+            <div class="result-value" id="resultWeekly">$0.00</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Bi-Weekly</div>
+            <div class="result-value" id="resultBiweekly">$0.00</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Monthly</div>
+            <div class="result-value" id="resultMonthly">$0.00</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Annual</div>
+            <div class="result-value success" id="resultAnnual">$0.00</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Effective Tax Rate</div>
+            <div class="result-value danger" id="effectiveTaxRate">0.00%</div>
+          </div>
+        </div>
+
+        <div class="tax-breakdown">
+          <h3>Tax Breakdown (Annual)</h3>
+          <div class="tax-item">
+            <span>Gross Income</span>
+            <span id="taxGrossIncome">$0.00</span>
+            <span class="converted" data-base-id="taxGrossIncome"></span>
+          </div>
+          <div class="tax-item federal-tax">
+            <span>Federal Tax</span>
+            <span id="taxFederal">$0.00</span>
+            <span class="converted" data-base-id="taxFederal"></span>
+          </div>
+          <div class="tax-item state-tax">
+            <span>State Tax</span>
+            <span id="taxState">$0.00</span>
+            <span class="converted" data-base-id="taxState"></span>
+          </div>
+          <div class="tax-item social-security">
+            <span>Social Security</span>
+            <span id="taxSocialSecurity">$0.00</span>
+            <span class="converted" data-base-id="taxSocialSecurity"></span>
+          </div>
+          <div class="tax-item medicare">
+            <span>Medicare</span>
+            <span id="taxMedicare">$0.00</span>
+            <span class="converted" data-base-id="taxMedicare"></span>
+          </div>
+          <div class="tax-item total-tax">
+            <span>Total Taxes</span>
+            <span id="taxTotal">$0.00</span>
+            <span class="converted" data-base-id="taxTotal"></span>
+          </div>
+          <div class="tax-item">
+            <span>Net Income</span>
+            <span id="taxNetIncome">$0.00</span>
+            <span class="converted" data-base-id="taxNetIncome"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="state-comparison">
+      <h2>Compare States</h2>
+      <p style="color: var(--gray); margin-bottom: 1.5rem">
+        See how your take-home pay varies across different states
+      </p>
+
+      <div class="comparison-controls">
+        <div class="input-group">
+          <label>State 1</label>
+          <div class="input-wrapper">
+            <select id="compareState1">
+              <option value="">Select State</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>State 2</label>
+          <div class="input-wrapper">
+            <select id="compareState2">
+              <option value="">Select State</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-results">
+        <div class="state-card" id="state1Card" style="display:none">
+          <div class="state-name" id="state1Name">State 1</div>
+          <div class="comparison-metric">
+            <span class="metric-label">Annual Gross</span>
+            <span class="metric-value" id="state1Gross">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Total Taxes</span>
+            <span class="metric-value" id="state1Taxes">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Net Income</span>
+            <span class="metric-value" id="state1Net">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Monthly Take-Home</span>
+            <span class="metric-value" id="state1Monthly">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Effective Tax Rate</span>
+            <span class="metric-value" id="state1Rate">0.00%</span>
+          </div>
+        </div>
+
+        <div class="state-card" id="state2Card" style="display:none">
+          <div class="state-name" id="state2Name">State 2</div>
+          <div class="comparison-metric">
+            <span class="metric-label">Annual Gross</span>
+            <span class="metric-value" id="state2Gross">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Total Taxes</span>
+            <span class="metric-value" id="state2Taxes">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Net Income</span>
+            <span class="metric-value" id="state2Net">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Monthly Take-Home</span>
+            <span class="metric-value" id="state2Monthly">$0.00</span>
+          </div>
+          <div class="comparison-metric">
+            <span class="metric-label">Effective Tax Rate</span>
+            <span class="metric-value" id="state2Rate">0.00%</span>
+          </div>
+          <div class="difference-badge" id="stateDifference"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
