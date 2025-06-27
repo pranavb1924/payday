@@ -782,6 +782,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("f1StudentCheckbox")
     .addEventListener("change", updateCalculations);
 
-  document.getElementById("hourlyRate").value = "25";
+  document.getElementById("hourlyRate").value = "0";
   updateCalculations();
 });
